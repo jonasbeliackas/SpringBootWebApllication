@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>FxRates</title>
+</head>
+<body>
+<div align="CENTER">
+    <H1>FXRATES</H1>
+    <a href="/">Home</a>
+    <a href="/graphs">Graphs</a>
+    <a href="/converter">Converter</a>
+</div>
+<ul>
+    <li th:each = "currency: ${currency}">
+        <span th:text = "${currency.toString()}">Default</span>
+
+    </li>
+</ul>
+</body>
+</html>

@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head lang="en"></head>
+    <meta charset="UTF-8">
+    <title>FxRates</title>
+<div align="CENTER">
+    <H1>FXRATESconverter</H1>
+    <a href="/">Home</a>
+    <a href="/graphs">Graphs</a>
+    <a href="/converter">Converter</a>
+</div><br/>
+</head>
+
+<body>
+<div align="CENTER">
+    <form action="#" th:action="@{/converter}" method="post" th:object="${convert}">
+        <div>
+            <label>convert </label>
+            <select th:field="*{currencyValue}">
+                <option th:each="dropDownItem : ${currency}"
+                        th:value="${dropDownItem.getCurrencyValue()}"
+                        th:text="${dropDownItem.getCurrencyName()}"/>
+            </select>
+            <label> to eur</label><br/><br/>
+        </div>
+
+        <input type="text" th:field="*{valueInTextField}"/>
+        <button type="submit" >convert</button>
+        <div>
+            <p></p>
+           <span th:text="${convertedValue}"></span><span> EUR</span>
+        </div>
+
+    </form>
+</div>
+
+</div>
+</body>
+</html>

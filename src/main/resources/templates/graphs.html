@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head lang="en"></head>
+<meta charset="UTF-8">
+<title>FxRates</title>
+<div align="CENTER">
+    <H1>FXRATESconverter</H1>
+    <a href="/">Home</a>
+    <a href="/graphs">Graphs</a>
+    <a href="/converter">Converter</a>
+</div><br/>
+<meta charset="ISO-8859-1">
+<title>High Chart Example - Spring Boot</title>
+<link rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+<link rel="stylesheet"
+      href="https://code.highcharts.com/css/highcharts.css" />
+<script
+        src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script
+        src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+<script src="https://code.highcharts.com/highcharts.js"></script>
+<script src="https://code.highcharts.com/modules/exporting.js"></script>
+<script src="https://code.highcharts.com/modules/export-data.js"></script>
+<script src="https://code.highcharts.com/modules/accessibility.js"></script>
+</head>
+
+<body>
+<div align="CENTER">
+    <form action="#" th:action="@{/graphs}" method="post" th:object="${chartData}">
+        <div align="CENTER"><br/>
+            <label>Select currency to see value chart</label><br/><br/>
+            <select th:field="*{id}">
+                <option th:each="dropDownItem : ${currency}"
+                        th:value="${dropDownItem.getId()}"
+                        th:text="${dropDownItem.getCurrencyName()}"/>
+            </select>
+            </div>
+            <br/>
+          <div>
+            <label>Data from</label>
+            <input type="text" th:field="*{dataFrom}"/><br/>
+            <label>Data To</label>
+            <input type="text" th:field="*{dataTo}"/><br/>
+            <button type="submit">Show Chart</button><br/>
+
+          </div>
+        <div align="center">
+            <span th:text="${error}"></span>
+        </div>
+</form>
+ </div>
+
+<figure class="highcharts-figure">
+    <div id="container-bar"></div>
+</figure>
+<script type="text/javascript">
+    $(document).ready(
+        function() {
+            $.ajax({
+                url : "/get-data",
+                success : function(result) {
+                    var yearDtls = [];
+                    var countDtls = [];
+                    console.log(result);
+                    Object.keys(result).forEach(
+                        function(key) {
+                            yearDtls.push(key);
+                            countDtls.push(result[key]);
+                        });
+                    drawChart(yearDtls, countDtls);
+                }
+            });
+        });
+
+    function drawChart(year, viewCounts) {
+        Highcharts.chart('container-bar', {
+            chart : {
+                type : 'column',
+                styledMode : true
+            },
+            title : {
+                text : 'Currency rates history'
+            },
+            xAxis : [ {
+                title : {
+                    text : 'Date'
+                },
+                categories : year
+            } ],
+            yAxis : [ {
+                className : 'highcharts-color-0',
+                title : {
+                    text : 'Currency rate'
+                }
+            } ],
+            series : [ {
+                data : viewCounts
+            } ]
+        });
+    }
+</script>
+</body>
+</html>
+</html>
